@@ -21,3 +21,7 @@ Route::middleware(['auth:api'])->get('/user', function (Request $request) {
 Route::get('test', function () {
     return ['ok'];
 })->middleware('auth:api');
+
+Route::get('sujets', 'ForumController@getLesSujets')->middleware(['auth:api', 'scope:forum']);
+
+Route::post('addSujet', 'ForumController@addSujet')->middleware(['auth:api', 'scope:forum']);

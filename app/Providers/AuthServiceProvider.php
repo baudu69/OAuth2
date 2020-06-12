@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Passport\Passport;
+use Mockery\Generator\StringManipulation\Pass\Pass;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -28,6 +29,11 @@ class AuthServiceProvider extends ServiceProvider
 
         Passport::routes();
 
-        Passport::personalAccessTokensExpireIn(now()->addSeconds(6));
+        Passport::tokensExpireIn(now()->addMinutes(5));
+
+        Passport::tokensCan([
+            'user' => 'Acceder aux information utilisateurs',
+            'forum' => 'Acceder aux forum'
+        ]);
     }
 }
