@@ -33,4 +33,32 @@ class ServiceForum
             throw new \Exception($e->getMessage());
         }
     }
+
+    public function getLesMessages($idSujet) {
+        try {
+            return DB::table('message')
+                ->select('message.id', 'contenu', 'message.created_at', 'users.name')
+                ->join('users', 'message.userId', '=', 'users.id')
+                ->where('sujetId', $idSujet)
+                ->orderBy('message.created_at')
+                ->get();
+        } catch (QueryException $e) {
+            throw new \Exception($e->getMessage());
+        }
+    }
+
+    public function addMessage($idUser, $idSujet, $contenu) {
+        try {
+            DB::table('message')
+                ->insert([
+                    'contenu' => $contenu,
+                    'userId' => $idUser,
+                    'sujetId' => $idSujet,
+                    'created_at' => now()
+                ]);
+        }
+        catch (QueryException $e) {
+            throw new \Exception($e->getMessage());
+        }
+    }
 }

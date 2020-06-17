@@ -41,4 +41,39 @@ class ForumController extends Controller
             return $reponse;
         }
     }
+
+    public function getLesMessages($idSujet) {
+        try {
+            $reponse = array();
+            $forum = new ServiceForum();
+            $reponse['data'] = $forum->getLesMessages($idSujet);
+            $reponse['Etat'] = 'ok';
+            return $reponse;
+        }
+        catch (\Exception $e) {
+            $reponse = array();
+            $reponse['Etat'] = 'ok';
+            $reponse['Message'] = $e->getMessage();
+            return $reponse;
+        }
+    }
+
+    public function addMessage(Request $request) {
+        try {
+            $contenu = $request->input('contenu');
+            $idSujet = $request->input('idSujet');
+            $idUser = $request->user()->id;
+            $reponse = array();
+            $forum = new ServiceForum();
+            $forum->addMessage($idUser, $idSujet, $contenu);
+            $reponse['Etat'] = 'ok';
+            return $reponse;
+        }
+        catch (\Exception $e) {
+            $reponse = array();
+            $reponse['Etat'] = 'erreur';
+            $reponse['Message'] = $e->getMessage();
+            return $reponse;
+        }
+    }
 }
